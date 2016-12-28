@@ -1,0 +1,292 @@
+<!DOCTYPE >
+<html>
+<head>
+    <title>Car Controller</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <style type="text/css">
+    body,table,input {
+        font-family: 'Microsoft YaHei';
+    }
+.control_panel2 {
+        /*max-width: 640px;*/
+        width:100%;
+        margin: 0 auto;
+    }
+    .control_panel2 table {
+        width:100%;
+    }
+    .control_panel2 table tr {
+        width:100%;
+    }
+    .control_panel2 table tr td {
+        width:33.3%;
+        text-align: center;
+        margin: 15px 0;
+    }
+    .control_panel2 table tr td.left {
+        text-align: right;
+    }
+    .control_panel2 table tr td.right {
+        text-align: left;
+    }
+    .control_panel2 input {
+       background-color: transparent;
+       border: 0;
+       width: 6.25em;
+       height: 6.25em;
+       margin: 0.5em;
+       color: #EEE;
+    }
+    .control_panel2 input:hover {
+        background-position: -22px -22px;
+        background-size: 124px 124px;
+    }
+    .control_panel2 .btn2 {
+        background-repeat: no-repeat;
+        background-size: 120px 120px;
+        background-position: -20px -20px;
+    }
+    .control_panel2 .up-btn2 {
+        background-image: url(/static/up-256_2.png);
+    }
+    .control_panel2 .left-btn2 {
+        background-image: url(/static/left-256_2.png);
+    }
+
+    .control_panel2 .right-btn2 {
+        background-image: url(/static/right-256_2.png);
+    }
+
+    .control_panel2 .bottom-btn2 {
+        background-image: url(/static/down-256_2.png);
+    }
+
+    .control_panel2 .center-btn2 {
+        background-image: url(/static/center-256_2.png);
+    }
+    .control_panel {
+        /*max-width: 640px;*/
+        width:100%;
+        margin: 0 auto;
+    }
+    .control_panel table {
+        width:100%;
+    }
+    .control_panel table tr {
+        width:100%;
+    }
+    .control_panel table tr td {
+        width:33.3%;
+        text-align: center;
+        margin: 15px 0;
+    }
+    .control_panel table tr td.left {
+        text-align: right;
+    }
+    .control_panel table tr td.right {
+        text-align: left;
+    }
+    .control_panel input {
+       background-color: transparent;
+       border: 0;
+       width: 6.25em;
+       height: 6.25em;
+       margin: 0.5em;
+       color: #EEE;
+    }
+    .control_panel input:hover {
+        background-position: -22px -22px;
+        background-size: 124px 124px;
+    }
+    .control_panel .btn {
+        background-repeat: no-repeat;
+        background-size: 120px 120px;
+        background-position: -20px -20px;
+    }
+    .control_panel .up-btn {
+        background-image: url(/static/up-256.png);
+    }
+    .control_panel .left-btn {
+        background-image: url(/static/left-256.png);
+    }
+
+    .control_panel .right-btn {
+        background-image: url(/static/right-256.png);
+    }
+
+    .control_panel .bottom-btn {
+        background-image: url(/static/down-256.png);
+    }
+
+    .control_panel .center-btn {
+        background-image: url(/static/pause-256.png);
+    }
+
+    </style>
+</head>
+<body background="../static/image.jpg">
+ <div id="content" align="center">
+                <img width="320" height="240" src="http://192.168.23.5:8001/?action=stream"><br/>
+                <div id="up"></div>
+                <div id="middle"></div>
+                <div id="down"></div>
+        </div>
+<div class="control_panel2">
+<table>
+	<tr>
+		<td></td>
+		<td><input type="button" operation="steer_up"  class="up-btn2 btn2"/></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td class="left"><input type="button" operation="steer_left" class="left-btn2 btn2"/></td>
+		<td><input type="button" operation="steer_center" class="center-btn2 btn2"/></td>
+		<td class="right"><input type="button" operation="steer_right" class="right-btn2 btn2"/></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td><input type="button" operation="steer_down" class="bottom-btn2 btn2"/></td>
+		<td></td>
+	</tr>
+</table>
+</div>
+<div class="control_panel">
+<table>
+	<tr>
+		<td></td>
+		<td><input type="button" operation="forward" operationup="pause" class="up-btn btn"/></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td class="left"><input type="button" operation="left" operationup="pause" class="left-btn btn"/></td>
+		<td><input type="button" operation="pause" operationup="pause" class="center-btn btn"/></td>
+		<td class="right"><input type="button" operation="right" operationup="pause" class="right-btn btn"/></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td><input type="button" operation="backward" operationup="pause" class="bottom-btn btn"/></td>
+		<td></td>
+	</tr>
+</table>
+</div>
+</body>
+</html>
+<script type='text/javascript' src='../static/jquery.min.js'></script>
+<script type="text/javascript">
+    $(function(){
+        $(window).resize(function(){
+
+        });
+        $('.btn2').mousedown(function(){
+            $.get("/handle", {type: $(this).attr('operation')}, function(data) {
+                if (data=="ok") {
+
+                } else {
+                    alert('system error')
+                }
+            });
+        });
+        $('.btn').mousedown(function(){
+            $.get("/handle", {type: $(this).attr('operation')}, function(data) {
+                if (data=="ok") {
+
+                } else {
+                    alert('system error')
+                }
+            });
+        });
+        $('.btn').mouseup(function(){
+            $.get("/handle", {type: $(this).attr('operationup')}, function(data) {
+                if (data=="ok") {
+
+                } else {
+                    alert('system error')
+                }
+            });
+        });
+        $(document).keydown(function(event){ 
+           if(event.keyCode == 37){ 
+           to_left();
+        }else if (event.keyCode == 39){
+           to_right();
+        }else if (event.keyCode == 38){
+           to_forward();
+        }else if (event.keyCode == 40){
+           to_back();
+        }
+        });
+        $(document).keyup(function(event){ 
+           if(event.keyCode == 37){ 
+           to_pause();
+        }else if (event.keyCode == 39){
+           to_pause();
+        }else if (event.keyCode == 38){
+           to_pause();
+        }else if (event.keyCode == 40){
+           to_pause();
+        }
+        });  
+    });
+    
+    function setH(){
+        var winHei = "", boxHei = "";
+        winHei = $(window).height();
+        boxHei = $('.control_panel').height();
+        console.log(winHei);
+        console.log(boxHei);
+        $('.control_panel').css('margin-top',(winHei-boxHei)/2);
+    }
+    function to_left(){
+        operation = "left";
+        $.get("/handle", {type: $(this).attr('operation')}, function(data) {
+                if (data=="ok") {
+
+                } else {
+                    alert('system error')
+                }
+            });
+    }
+    function to_right(){
+        operation = "right";
+        $.get("/handle", {type: $(this).attr('operation')}, function(data) {
+                if (data=="ok") {
+
+                } else {
+                    alert('system error')
+                }
+            });  
+    }
+    function to_forward(){
+        operation = "forward";
+        $.get("/handle", {type: $(this).attr('operation')}, function(data) {
+                if (data=="ok") {
+
+                } else {
+                    alert('system error')
+                }
+            });  
+    }
+    function to_back(){
+        operation = "backward";
+        $.get("/handle", {type: $(this).attr('operation')}, function(data) {
+                if (data=="ok") {
+
+                } else {
+                    alert('system error')
+                }
+            });  
+    }
+    function to_pause(){
+        operationup = "pause";
+        $.get("/handle", {type: $(this).attr('operationup')}, function(data) {
+                if (data=="ok") {
+
+                } else {
+                    alert('system error')
+                }
+            });  
+    }
+</script>
